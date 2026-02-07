@@ -1,5 +1,4 @@
 import '../../models/job.dart';
-import '../../models/api.dart';
 import '../../utils/config.dart';
 import 'api_client.dart';
 import '../mock/mock_jobs_service.dart';

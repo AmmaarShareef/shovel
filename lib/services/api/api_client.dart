@@ -5,7 +5,7 @@ import '../../utils/config.dart';
 class ApiClient {
   static final Dio _dio = Dio(
     BaseOptions(
-      baseURL: apiBaseUrl,
+      baseUrl: apiBaseUrl,
       connectTimeout: const Duration(seconds: 30),
       receiveTimeout: const Duration(seconds: 30),
       headers: {
