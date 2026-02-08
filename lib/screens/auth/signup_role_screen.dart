@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class RoleSelectionScreen extends StatelessWidget {
-  const RoleSelectionScreen({super.key});
+class SignupRoleScreen extends StatelessWidget {
+  const SignupRoleScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,17 +14,17 @@ class RoleSelectionScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text(
-                'Welcome to Shovel',
+                'Sign Up',
                 style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               const Text(
-                'Do you already have an account? Log in.',
+                'Choose your role to get started',
                 style: TextStyle(fontSize: 16, color: Colors.grey),
               ),
               const SizedBox(height: 48),
               InkWell(
-                onTap: () => context.go('/login'),
+                onTap: () => context.go('/register?role=customer'),
                 child: Container(
                   width: double.infinity,
                   height: 60,
@@ -38,7 +38,7 @@ class RoleSelectionScreen extends StatelessWidget {
                   ),
                   child: const Center(
                     child: Text(
-                      'Yes, Log In',
+                      'I need snow removal',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 16,
@@ -50,7 +50,7 @@ class RoleSelectionScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               InkWell(
-                onTap: () => context.go('/signup-role'),
+                onTap: () => context.go('/register?role=shoveler'),
                 child: Container(
                   width: double.infinity,
                   height: 60,
@@ -64,7 +64,7 @@ class RoleSelectionScreen extends StatelessWidget {
                   ),
                   child: const Center(
                     child: Text(
-                      'No, Create an Account',
+                      "I'm a shoveler",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 16,
@@ -74,6 +74,11 @@ class RoleSelectionScreen extends StatelessWidget {
                   ),
                 ),
               ),
+              const SizedBox(height: 24),
+              TextButton(
+                onPressed: () => context.go('/login'),
+                child: const Text('Already have an account? Log in'),
+              ),
             ],
           ),
         ),
@@ -81,4 +86,3 @@ class RoleSelectionScreen extends StatelessWidget {
     );
   }
 }
-

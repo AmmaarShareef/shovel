@@ -17,7 +17,13 @@ class JobDetailsScreen extends StatelessWidget {
         backgroundColor: Colors.green[600],
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.pop(),
+          onPressed: () {
+            if (context.canPop()) {
+              context.pop();
+            } else {
+              context.go('/shoveler/home');
+            }
+          },
         ),
       ),
       body: Consumer<JobProvider>(
@@ -119,37 +125,36 @@ class JobDetailsScreen extends StatelessWidget {
                               const SizedBox(height: 12),
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(8),
-                                child: SizedBox(
-                                  width: double.infinity,
-                                  height: 240,
+                                child: AspectRatio(
+                                  aspectRatio: 4 / 3,
                                   child: job.beforePhotoUrl.isNotEmpty
                                       ? Container(
                                           color: Colors.black,
                                           child: Stack(
-                                          fit: StackFit.expand,
-                                          children: [
-                                            Image.network(
-                                              job.beforePhotoUrl,
-                                              fit: BoxFit.contain,
-                                              errorBuilder: (context, error, stackTrace) => Container(
-                                                color: Colors.grey[200],
-                                                child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: [
-                                                    Icon(Icons.broken_image, size: 48, color: Colors.grey[400]),
-                                                    const SizedBox(height: 8),
-                                                    Text('Image unavailable', style: TextStyle(color: Colors.grey[600])),
-                                                  ],
+                                            fit: StackFit.expand,
+                                            children: [
+                                              Image.network(
+                                                job.beforePhotoUrl,
+                                                fit: BoxFit.contain,
+                                                errorBuilder: (context, error, stackTrace) => Container(
+                                                  color: Colors.grey[200],
+                                                  child: Column(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                      Icon(Icons.broken_image, size: 48, color: Colors.grey[400]),
+                                                      const SizedBox(height: 8),
+                                                      Text('Image unavailable', style: TextStyle(color: Colors.grey[600])),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                            if (polygons.isNotEmpty)
-                                              Positioned.fill(
-                                                child: CustomPaint(
-                                                  painter: _PolygonOverlayPainter(polygons: polygons),
+                                              if (polygons.isNotEmpty)
+                                                Positioned.fill(
+                                                  child: CustomPaint(
+                                                    painter: _PolygonOverlayPainter(polygons: polygons),
+                                                  ),
                                                 ),
-                                              ),
-                                          ],
+                                            ],
                                           ),
                                         )
                                       : Container(

@@ -78,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                               Text(
-                                'Sign In',
+                                'Log In',
                                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -117,7 +117,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               const SizedBox(height: 28),
                               CustomButton(
-                                text: 'Sign In',
+                                text: 'Log In',
                                 onPressed: () async {
                                   if (_formKey.currentState!.validate()) {
                                     try {
@@ -142,7 +142,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               const SizedBox(height: 16),
                               TextButton(
-                                onPressed: () => context.go('/register'),
+                                onPressed: () => context.go('/signup-role'),
                                 child: Text(
                                   "Don't have an account? Sign up",
                                   style: TextStyle(color: Colors.blue[600]),

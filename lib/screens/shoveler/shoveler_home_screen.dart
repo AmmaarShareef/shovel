@@ -186,6 +186,20 @@ class _ShovelerHomeScreenState extends State<ShovelerHomeScreen> {
                       ),
                     ),
                     const SizedBox(height: 24),
+                    OutlinedButton.icon(
+                      onPressed: () => context.go('/shoveler/jobs-map'),
+                      icon: const Icon(Icons.map),
+                      label: const Text('Open Jobs Map'),
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        foregroundColor: Colors.white,
+                        side: BorderSide(color: Colors.white.withOpacity(0.7)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 24),
 
                     // Info Card
                     Card(

@@ -170,6 +170,42 @@ class MockJobsService implements IJobsService {
   }
 
   @override
+  Future<Job> verifyJob(String jobId) async {
+    await _delay(700);
+
+    final index = _jobs.indexWhere((j) => j.id == jobId);
+    if (index == -1) throw Exception('Job not found');
+
+    final job = _jobs[index];
+    final updatedJob = Job(
+      id: job.id,
+      customerId: job.customerId,
+      shovelerId: job.shovelerId,
+      title: job.title,
+      description: job.description,
+      address: job.address,
+      location: job.location,
+      beforePhotoUrl: job.beforePhotoUrl,
+      afterPhotoUrl: job.afterPhotoUrl,
+      polygons: job.polygons,
+      status: JobStatus.verified,
+      deadline: job.deadline,
+      paymentAmount: job.paymentAmount,
+      paymentStatus: PaymentStatus.released,
+      aiVerificationStatus: AIVerificationStatus.approved,
+      aiConfidenceScore: job.aiConfidenceScore ?? 0.98,
+      createdAt: job.createdAt,
+      completedAt: job.completedAt,
+      verifiedAt: DateTime.now(),
+      customer: job.customer,
+      shoveler: job.shoveler,
+    );
+
+    _jobs[index] = updatedJob;
+    return updatedJob;
+  }
+
+  @override
   Future<Job> getJobStatus(String jobId) async {
     return getJob(jobId);
   }

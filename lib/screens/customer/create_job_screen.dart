@@ -223,7 +223,13 @@ class _CreateJobScreenState extends State<CreateJobScreen> {
         backgroundColor: Colors.blue[600],
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.pop(),
+          onPressed: () {
+            if (context.canPop()) {
+              context.pop();
+            } else {
+              context.go('/customer/home');
+            }
+          },
         ),
       ),
       body: SingleChildScrollView(
@@ -562,11 +568,16 @@ class _CreateJobScreenState extends State<CreateJobScreen> {
                     child: ElevatedButton.icon(
                       onPressed: jobProvider.isLoading ? null : _submitJob,
                       icon: const Icon(Icons.check_circle),
-                      label: Text(jobProvider.isLoading ? 'Creating...' : 'Create Job'),
+                      label: Text(
+                        jobProvider.isLoading ? 'Creating...' : 'Create Job',
+                        style: const TextStyle(color: Colors.black),
+                      ),
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         backgroundColor: Colors.blue[600],
                         disabledBackgroundColor: Colors.grey[300],
+                        foregroundColor: Colors.black,
+                        disabledForegroundColor: Colors.black54,
                       ),
                     ),
                   );

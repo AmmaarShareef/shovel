@@ -31,7 +31,13 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Jobs'),
+        title: const Text(
+          'My Jobs',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+          ),
+        ),
         elevation: 0,
         backgroundColor: Colors.blue[600],
       ),
@@ -104,6 +110,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                           'Your Jobs',
                           style: Theme.of(context).textTheme.titleLarge?.copyWith(
                             fontWeight: FontWeight.bold,
+                            fontSize: 22,
                           ),
                         ),
                       ),

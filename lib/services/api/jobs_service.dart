@@ -10,6 +10,7 @@ abstract class IJobsService {
   Future<List<Job>> getAvailableJobs(double lat, double lng, {double? radius});
   Future<Job> acceptJob(String jobId);
   Future<Job> completeJob(String jobId, String afterPhoto);
+  Future<Job> verifyJob(String jobId);
   Future<Job> getJobStatus(String jobId);
   Future<void> submitRating(String jobId, RatingData rating);
 }
@@ -62,6 +63,14 @@ class RealJobsService implements IJobsService {
     final response = await ApiClient.post<Map<String, dynamic>>(
       '/jobs/$jobId/complete',
       data: {'afterPhoto': afterPhoto},
+    );
+    return Job.fromJson(response);
+  }
+
+  @override
+  Future<Job> verifyJob(String jobId) async {
+    final response = await ApiClient.post<Map<String, dynamic>>(
+      '/jobs/$jobId/verify',
     );
     return Job.fromJson(response);
   }

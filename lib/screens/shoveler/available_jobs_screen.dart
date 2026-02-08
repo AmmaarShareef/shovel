@@ -32,7 +32,13 @@ class _AvailableJobsScreenState extends State<AvailableJobsScreen> {
         backgroundColor: Colors.green[600],
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.pop(),
+          onPressed: () {
+            if (context.canPop()) {
+              context.pop();
+            } else {
+              context.go('/shoveler/home');
+            }
+          },
         ),
       ),
       body: Consumer<JobProvider>(

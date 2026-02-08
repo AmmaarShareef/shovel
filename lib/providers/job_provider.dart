@@ -77,6 +77,29 @@ class JobProvider with ChangeNotifier {
     }
   }
 
+  Future<void> verifyJob(String jobId) async {
+    try {
+      _isLoading = true;
+      _error = null;
+      notifyListeners();
+
+      final updatedJob = await jobsService.verifyJob(jobId);
+      final index = _jobs.indexWhere((j) => j.id == jobId);
+      if (index != -1) {
+        _jobs[index] = updatedJob;
+      }
+      if (_activeJob?.id == jobId) {
+        _activeJob = updatedJob;
+      }
+    } catch (e) {
+      _error = e.toString().replaceAll('Exception: ', '');
+      rethrow;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
   Future<void> fetchJobs({JobFilters? filters}) async {
     try {
       _isLoading = true;
@@ -84,6 +107,25 @@ class JobProvider with ChangeNotifier {
       notifyListeners();
 
       _jobs = await jobsService.getJobs(filters: filters);
+    } catch (e) {
+      _error = e.toString().replaceAll('Exception: ', '');
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> fetchAvailableJobs({
+    required double lat,
+    required double lng,
+    double? radius,
+  }) async {
+    try {
+      _isLoading = true;
+      _error = null;
+      notifyListeners();
+
+      _jobs = await jobsService.getAvailableJobs(lat, lng, radius: radius);
     } catch (e) {
       _error = e.toString().replaceAll('Exception: ', '');
     } finally {
