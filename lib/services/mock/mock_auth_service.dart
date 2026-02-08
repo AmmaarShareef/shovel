@@ -10,22 +10,27 @@ class MockAuthService implements IAuthService {
     await Future.delayed(Duration(milliseconds: ms));
   }
 
+  // All test accounts use password 'test123'
+  static const String testPassword = 'test123';
+
   @override
   Future<AuthResponse> login(LoginData data) async {
     await _delay(1000);
 
+    // Find user by email
     final user = MockData.mockUsers.values.firstWhere(
       (u) => u.email == data.email,
       orElse: () => throw Exception('Invalid email or password'),
     );
 
-    if (data.password != 'password123') {
+    // Check password (all test accounts use same password)
+    if (data.password != testPassword) {
       throw Exception('Invalid email or password');
     }
 
     return AuthResponse(
       user: user,
-      token: 'mock-token-${user.id}',
+      token: 'mock-token-${user.id}-${DateTime.now().millisecondsSinceEpoch}',
     );
   }
 
@@ -33,13 +38,18 @@ class MockAuthService implements IAuthService {
   Future<AuthResponse> register(RegisterData data) async {
     await _delay(1000);
 
-    final existingUser = MockData.mockUsers.values.firstWhere(
-      (u) => u.email == data.email,
-      orElse: () => throw Exception('Email already registered'),
-    );
-
-    if (existingUser.email == data.email) {
+    // Check if email already exists
+    try {
+      MockData.mockUsers.values.firstWhere(
+        (u) => u.email == data.email,
+      );
       throw Exception('Email already registered');
+    } catch (e) {
+      if (e.toString().contains('No element')) {
+        // Email doesn't exist, continue with registration
+      } else {
+        rethrow;
+      }
     }
 
     final newUser = User(
@@ -55,7 +65,7 @@ class MockAuthService implements IAuthService {
 
     return AuthResponse(
       user: newUser,
-      token: 'mock-token-${newUser.id}',
+      token: 'mock-token-${newUser.id}-${DateTime.now().millisecondsSinceEpoch}',
     );
   }
 
@@ -67,7 +77,7 @@ class MockAuthService implements IAuthService {
   @override
   Future<Map<String, dynamic>> refreshToken() async {
     await _delay(500);
-    return {'token': 'mock-refreshed-token'};
+    return {'token': 'mock-refreshed-token-${DateTime.now().millisecondsSinceEpoch}'};
   }
 }
 

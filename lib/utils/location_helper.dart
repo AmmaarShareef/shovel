@@ -31,7 +31,7 @@ class LocationHelper {
       }
 
       return await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.balanced,
+        desiredAccuracy: LocationAccuracy.medium,
       );
     } catch (e) {
       return null;
@@ -57,6 +57,8 @@ class LocationHelper {
       heading: 0,
       speed: 0,
       speedAccuracy: 0,
+      altitudeAccuracy: 0,
+      headingAccuracy: 0,
     );
   }
 }

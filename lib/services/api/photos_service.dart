@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:dio/dio.dart';
 import '../../models/api.dart';
 import '../../utils/config.dart';
@@ -13,7 +12,6 @@ abstract class IPhotosService {
 class RealPhotosService implements IPhotosService {
   @override
   Future<PhotoUploadResponse> uploadPhoto(String photoPath, String type) async {
-    final file = File(photoPath);
     final fileName = photoPath.split('/').last;
 
     final formData = FormData.fromMap({

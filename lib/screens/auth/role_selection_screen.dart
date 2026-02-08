@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../../models/user.dart';
 
 class RoleSelectionScreen extends StatelessWidget {
   const RoleSelectionScreen({super.key});
@@ -24,20 +23,56 @@ class RoleSelectionScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 16, color: Colors.grey),
               ),
               const SizedBox(height: 48),
-              ElevatedButton(
-                onPressed: () => context.go('/register?role=customer'),
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(double.infinity, 60),
+              InkWell(
+                onTap: () => context.go('/register?role=customer'),
+                child: Container(
+                  width: double.infinity,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [Colors.blue[400]!, Colors.blue[600]!],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Center(
+                    child: Text(
+                      'I need snow removal',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
                 ),
-                child: const Text('I need snow removal'),
               ),
               const SizedBox(height: 16),
-              OutlinedButton(
-                onPressed: () => context.go('/register?role=shoveler'),
-                style: OutlinedButton.styleFrom(
-                  minimumSize: const Size(double.infinity, 60),
+              InkWell(
+                onTap: () => context.go('/register?role=shoveler'),
+                child: Container(
+                  width: double.infinity,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [Colors.blue[400]!, Colors.blue[600]!],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Center(
+                    child: Text(
+                      "I'm a shoveler",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
                 ),
-                child: const Text("I'm a shoveler"),
               ),
               const SizedBox(height: 24),
               TextButton(

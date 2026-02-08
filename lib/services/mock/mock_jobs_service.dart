@@ -17,15 +17,16 @@ class MockJobsService implements IJobsService {
 
     final newJob = Job(
       id: 'job-${DateTime.now().millisecondsSinceEpoch}',
-      customerId: 'customer-1',
+      customerId: data.customerId ?? 'customer-1',
       title: data.title,
       description: data.description,
       address: data.address,
       location: data.location,
       beforePhotoUrl: data.beforePhoto,
+      polygons: data.polygons,
       status: JobStatus.pending,
       deadline: data.deadline,
-      paymentAmount: 50.00,
+      paymentAmount: data.paymentAmount,
       paymentStatus: PaymentStatus.pending,
       createdAt: DateTime.now(),
     );
@@ -42,6 +43,10 @@ class MockJobsService implements IJobsService {
 
     if (filters?.status != null) {
       filtered = filtered.where((job) => job.status == filters!.status).toList();
+    }
+
+    if (filters?.customerId != null) {
+      filtered = filtered.where((job) => job.customerId == filters!.customerId).toList();
     }
 
     return filtered;
@@ -81,6 +86,7 @@ class MockJobsService implements IJobsService {
       address: job.address,
       location: job.location,
       beforePhotoUrl: job.beforePhotoUrl,
+      polygons: job.polygons,
       status: JobStatus.accepted,
       deadline: job.deadline,
       paymentAmount: job.paymentAmount,
@@ -116,6 +122,7 @@ class MockJobsService implements IJobsService {
       location: job.location,
       beforePhotoUrl: job.beforePhotoUrl,
       afterPhotoUrl: afterPhoto,
+      polygons: job.polygons,
       status: JobStatus.completed,
       deadline: job.deadline,
       paymentAmount: job.paymentAmount,
@@ -140,6 +147,7 @@ class MockJobsService implements IJobsService {
         location: updatedJob.location,
         beforePhotoUrl: updatedJob.beforePhotoUrl,
         afterPhotoUrl: updatedJob.afterPhotoUrl,
+        polygons: updatedJob.polygons,
         status: JobStatus.verified,
         deadline: updatedJob.deadline,
         paymentAmount: updatedJob.paymentAmount,

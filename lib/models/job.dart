@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 enum JobStatus {
   pending,
   accepted,
@@ -30,6 +32,7 @@ class Job {
   final LocationCoordinates location;
   final String beforePhotoUrl;
   final String? afterPhotoUrl;
+  final List<List<Offset>> polygons;
   final JobStatus status;
   final DateTime deadline;
   final double paymentAmount;
@@ -52,6 +55,7 @@ class Job {
     required this.location,
     required this.beforePhotoUrl,
     this.afterPhotoUrl,
+    List<List<Offset>>? polygons,
     required this.status,
     required this.deadline,
     required this.paymentAmount,
@@ -63,7 +67,7 @@ class Job {
     this.verifiedAt,
     this.customer,
     this.shoveler,
-  });
+  }) : polygons = polygons ?? const [];
 
   factory Job.fromJson(Map<String, dynamic> json) {
     return Job(
@@ -76,6 +80,7 @@ class Job {
       location: LocationCoordinates.fromJson(json['location']),
       beforePhotoUrl: json['beforePhotoUrl'],
       afterPhotoUrl: json['afterPhotoUrl'],
+      polygons: _parsePolygons(json['polygons']),
       status: JobStatus.values.firstWhere(
         (e) => e.toString().split('.').last == json['status'],
         orElse: () => JobStatus.pending,
@@ -112,6 +117,9 @@ class Job {
       'location': location.toJson(),
       'beforePhotoUrl': beforePhotoUrl,
       'afterPhotoUrl': afterPhotoUrl,
+      'polygons': polygons
+          .map((poly) => poly.map((p) => [p.dx, p.dy]).toList())
+          .toList(),
       'status': status.toString().split('.').last,
       'deadline': deadline.toIso8601String(),
       'paymentAmount': paymentAmount,
@@ -124,6 +132,26 @@ class Job {
       'customer': customer?.toJson(),
       'shoveler': shoveler?.toJson(),
     };
+  }
+
+  static List<List<Offset>> _parsePolygons(dynamic raw) {
+    if (raw is! List) return const [];
+    final polygons = <List<Offset>>[];
+    for (final poly in raw) {
+      if (poly is! List) continue;
+      final points = <Offset>[];
+      for (final pt in poly) {
+        if (pt is List && pt.length >= 2) {
+          final dx = (pt[0] as num).toDouble();
+          final dy = (pt[1] as num).toDouble();
+          points.add(Offset(dx, dy));
+        }
+      }
+      if (points.isNotEmpty) {
+        polygons.add(points);
+      }
+    }
+    return polygons;
   }
 }
 
@@ -211,6 +239,9 @@ class CreateJobData {
   final LocationCoordinates location;
   final DateTime deadline;
   final String beforePhoto;
+  final List<List<Offset>> polygons;
+  final double paymentAmount;
+  final String? customerId;
 
   CreateJobData({
     required this.title,
@@ -219,7 +250,10 @@ class CreateJobData {
     required this.location,
     required this.deadline,
     required this.beforePhoto,
-  });
+    List<List<Offset>>? polygons,
+    required this.paymentAmount,
+    this.customerId,
+  }) : polygons = polygons ?? const [];
 
   Map<String, dynamic> toJson() {
     return {
@@ -229,12 +263,18 @@ class CreateJobData {
       'location': location.toJson(),
       'deadline': deadline.toIso8601String(),
       'beforePhoto': beforePhoto,
+      'polygons': polygons
+          .map((poly) => poly.map((p) => [p.dx, p.dy]).toList())
+          .toList(),
+      'paymentAmount': paymentAmount,
+      if (customerId != null) 'customerId': customerId,
     };
   }
 }
 
 class JobFilters {
   final JobStatus? status;
+  final String? customerId;
   final double? lat;
   final double? lng;
   final double? radius;
@@ -243,6 +283,7 @@ class JobFilters {
 
   JobFilters({
     this.status,
+    this.customerId,
     this.lat,
     this.lng,
     this.radius,
@@ -253,6 +294,7 @@ class JobFilters {
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     if (status != null) map['status'] = status.toString().split('.').last;
+    if (customerId != null) map['customerId'] = customerId;
     if (lat != null) map['lat'] = lat;
     if (lng != null) map['lng'] = lng;
     if (radius != null) map['radius'] = radius;
